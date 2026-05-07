@@ -1,25 +1,34 @@
-This repository hosts materials related to a workshop created for CDCS by Ki Tong. The workshop serves as an introductory guide to working with spatial data. This is a back-to-back tutorial. If you are to attend the tutorial in person, you only need to download the files in the repository, and the in-person tutorial will go through the content covered below. If you are unable to attend the tutorial, then please go through the tutorial here in GitHub. Spatial analysis is fundamental in a variety of research fields, including tracking human movement, assessing the impact of location on various phenomena, and studying environmental changes. The workshop addresses key issues related to spatial data and focuses on visualization and styling using GIS software. Below, you will find a repository that includes datasets, workshop practice files, and presentation slides linked to this workshop. The repository also contains a PowerPoint file, which is the same set of slides used for delivering this tutorial in person.
+# Silent Disco: Spatial Data Wrangling
 
-How to use this repository
-This repository includes a collection of datasets and guidelines for conducting practical exercises, all contained in a zipped folder titled Introduction to Spatial Data and GIS. The workshop comprises two sessions. Therefore, the folders within the unzipped folder are arranged in two sessions:
+[cite_start]This repository contains the necessary files to host the **Spatial Data Wrangling in QGIS** tutorial as a live website[cite: 1, 9]. [cite_start]This project provides a step-by-step guide for students to aggregate vector and raster information into uniform hexagonal bins for statistical analysis[cite: 7, 11].
 
-All material for Session 1 is in the Intro_to_GIS_Part1 folder.
-All material for Session 2 is in the Intro_to_GIS_Part2 folder. Download the datasets and follow the workbook instructions to complete the practical exercises. You can also use the slides and the resource list to gather further knowledge on the topic.
-Installing QGIS
-To complete the exercises, you will need to install QGIS (free and open-source software for working with spatial data).
+## 📂 Project Structure
 
-Visit the official QGIS download page: https://qgis.org/en/site/forusers/download.html
-Choose the appropriate installer for your operating system:
-Windows: Use the latest Long Term Release (LTR) for stability.
-macOS: Download the official macOS package.
-Linux: Follow the repository instructions provided for your distribution.
-Install by following the on-screen instructions.
-Once installed, launch QGIS and confirm by opening the sample project or loading a shapefile.
-Author
-Ki Tong
+* [cite_start]`index.html`: The primary tutorial website file[cite: 9].
+* `Spatial_Data_Wrangling_Tutorial.Rmd`: The source R-markdown for the tutorial content.
+* [cite_start]`/images`: (Suggested) Directory to store tutorial screenshots for QGIS workflows[cite: 29, 39, 41].
 
-Topics
-Data Visualisation, GIS
+## 🚀 How to Host on GitHub Pages
 
-License
-All material collected here is free to use but is covered by a License: License: CC BY-NC 4.0 license
+Follow these steps to make the tutorial accessible to your students online:
+
+1.  **Create a Repository**: Start a new repository on GitHub (e.g., `edinburgh-qgis-tutorial`).
+2.  **Upload Content**: Add the `index.html` file and your `/images` folder to the **main** branch.
+3.  **Configure GitHub Pages**:
+    * Navigate to your repository **Settings**.
+    * Click on **Pages** in the left-hand sidebar.
+    * Under **Build and deployment**, ensure the source is set to "Deploy from a branch".
+    * Select the `main` branch and the `/ (root)` folder.
+    * Click **Save**.
+4.  **Go Live**: Your tutorial will be live shortly at `https://[your-username].github.io/edinburgh-qgis-tutorial/`.
+
+## 🛠 Tutorial Context
+
+This training module focuses on:
+* [cite_start]**Vector Aggregation**: Counting tree distribution across Edinburgh Ward Boundaries[cite: 33, 36].
+* **Raster Integration**: Processing LDEN noise level data using Zonal Statistics[cite: 59, 61, 73].
+* [cite_start]**Hexagonal Binning**: Creating 500m sample "bins" for standardized comparison[cite: 87, 91].
+* [cite_start]**Statistical Analysis**: Running Spearman's Rho correlations via the QGIS Python console[cite: 136, 184].
+
+---
+[cite_start]*Please note: These analyses are currently in development by the training institute[cite: 206].*
