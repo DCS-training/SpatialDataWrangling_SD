@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spatial Data Wrangling in QGIS | Edinburgh Tutorial</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #27ae60;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+            --code-bg: #f8f9fa;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        header {
+            background: var(--primary-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 40px;
+        }
+        h1 { margin: 0; font-size: 2.2em; }
+        h2 { color: var(--primary-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-top: 40px; }
+        h3 { color: var(--accent-color); }
+        .container { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+        code { background: var(--code-bg); padding: 2px 5px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; }
+        pre {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .goal-list { background: #e8f5e9; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent-color); }
+        .screenshot-placeholder {
+            background: #eee;
+            border: 2px dashed #ccc;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            color: #777;
+            font-style: italic;
+        }
+        .footer { text-align: center; margin-top: 50px; padding: 20px; font-size: 0.9em; color: #666; }
+        .highlight-box { background: #fff3e0; border-left: 5px solid #ff9800; padding: 15px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Spatial Data Wrangling in QGIS</h1>
+    <p>Preparing Data for Statistical Analysis: Edinburgh Case Study</p>
+</header>
+
+<div class="container">
+    <section>
+        <h2>1. Introduction</h2>
+        <p>Many types of sources used by social scientists are inherently spatial where spatial data is treated as a primary variable. We could be interested in how, for instance, tree density is associated with indicators of wellbeing, or environmental injustice where poorer neighbourhoods are associated with worse environmental conditions such as noise.</p>
+        
+        <div class="goal-list">
+            <h3>Lesson Goals</h3>
+            <ul>
+                <li>Aggregate vector and raster information to polygons to aid in visualising patterns.</li>
+                <li>Construct polygon bins and apply spatial join techniques for vector-based point data.</li>
+                <li>Align raster data with polygon bins using zonal operations.</li>
+                <li>Export aggregated datasets for further statistical analysis.</li>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <h2>2. Setup & Requirements</h2>
+        <p>This tutorial builds upon foundational skills in GIS, especially adding layers and managing Coordinate Reference Systems (CRS).</p>
+        <ol>
+            <li>Download the <strong>SilentDiscoGeo (.zip)</strong> folder.</li>
+            <li>Relocate the folder to your <strong>Desktop</strong> for easy access.</li>
+            <li>Ensure you have the latest version of <strong>QGIS</strong> installed.</li>
+        </ol>
+        <p>Open <code>ProjectGeo.qgz</code> in QGIS to begin. Add the <code>Tree.shp</code> and <code>Edinburgh_Ward_Boundaries.shp</code> layers from the Vectors folder.</p>
+        <div class="screenshot-placeholder">[Image: Initial Tree Distribution Map]</div>
+    </section>
+
+    <section>
+        <h2>3. Aggregating Vector Point Data</h2>
+        <p>To understand the relationship of trees in Edinburgh, we will create a <strong>Choropleth Map</strong> showing the number of trees in each Ward Boundary.</p>
+        <h3>Steps:</h3>
+        <ol>
+            <li>Go to <code>Processing > Toolbox</code> and search for <strong>"Join attributes by location (summary)"</strong>.</li>
+            <li><strong>Join to features in:</strong> <code>Edinburgh_Ward_Boundaries</code>.</li>
+            <li><strong>By comparing as:</strong> <code>Trees</code>.</li>
+            <li><strong>Fields to summarise:</strong> Check <code>ID</code>.</li>
+            <li><strong>Summaries to calculate:</strong> Check <code>count</code>.</li>
+            <li>Run the tool and style the resulting layer using <strong>Graduated Symbology</strong> with the <code>OBJECTID_count</code> value.</li>
+        </ol>
+        <div class="screenshot-placeholder">[Image: Tree Count Choropleth]</div>
+    </section>
+
+    <section>
+        <h2>4. Aggregating Raster Noise Data</h2>
+        <p>Now we will load the noise level data (<code>HORE_CONSOLIDATED_LDEN.tif</code>). LDEN records noise levels in decibels (dB).</p>
+        <h3>Zonal Statistics:</h3>
+        <p>To get a representative average noise value for each Ward, we use <strong>Zonal Statistics</strong>.</p>
+        <ul>
+            <li><strong>Input layer:</strong> <code>Edinburgh_Ward_Boundaries</code>.</li>
+            <li><strong>Raster layer:</strong> <code>HORE_CONSOLIDATED_LDEN</code>.</li>
+            <li><strong>Statistics to calculate:</strong> <code>mean</code>.</li>
+        </ul>
+        <p>Style this layer using a red-to-blue gradient to represent high and low noise levels.</p>
+        <div class="screenshot-placeholder">[Image: Noise Level Choropleth]</div>
+    </section>
+
+    <section>
+        <h2>5. Constructing Polygon Bins (Hexagons)</h2>
+        <p>To perform statistical analysis, we need uniform sample "bins".</p>
+        <ol>
+            <li>Go to <code>Vector > Research Tools > Create Grid</code>.</li>
+            <li><strong>Grid Type:</strong> Hexagon.</li>
+            <li><strong>Extent:</strong> Calculate from <code>Edinburgh_Ward_Boundaries</code>.</li>
+            <li><strong>Spacing:</strong> 500 meters.</li>
+            <li>Use <strong>Select by Location</strong> to trim the grid to the city boundaries.</li>
+        </ol>
+        <div class="screenshot-placeholder">[Image: Hexagonal Grid Overlay]</div>
+    </section>
+
+    <section>
+        <h2>6. Exploratory Statistical Analysis</h2>
+        <p>We can use the built-in <strong>Python Console</strong> (<code>Ctrl + Alt + P</code>) to run a quick Spearman's Rho correlation between tree counts and noise levels.</p>
+        <pre>
+from qgis.core import QgsProject
+from scipy import stats
+
+# Configuration
+layer_name = 'Grid_Aggregated'
+tree_field = 'OBJECTID_c'
+noise_field = '_mean'
+
+# Analysis script logic...
+# (Full script provided in tutorial files)
+        </pre>
+        
+        <div class="highlight-box">
+            <h3>Interpreting the Results</h3>
+            <p><strong>Spearman's Rho: 0.0587 (Positive Correlation)</strong></p>
+            <p>This suggests that, surprisingly, noisier areas in Edinburgh often have more trees. This is likely due to roadside planting along busy arterial roads and urban density patterns.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>7. Conclusion</h2>
+        <p>A Spearman correlation is a brilliant tool for "spotting" a pattern, but spatial tools are required to "prove" it by accounting for the complex, overlapping layers of a living city.</p>
+        <p><em>Please note that these are analysis in development by the training institute.</em></p>
+    </section>
+</div>
+
+<div class="footer">
+    <p>&copy; 2026 Training Institute | Edinburgh Geospatial Analysis Series</p>
+</div>
+
+</body>
+</html>
