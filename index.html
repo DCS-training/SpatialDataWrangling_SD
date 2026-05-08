@@ -137,79 +137,79 @@
         </div>
     </section>
 
-    <section id="raster">
+<section id="raster">
         <h2>Raster Aggregation</h2>
-        [cite_start]<p>It is intuitive to count the number of trees within each polygon because individual trees are countable vector points[cite: 55]. However, how do we handle raster data? [cite_start]How can we create a Choropleth Map when our source data is a continuous grid[cite: 56]?</p>
+        <p>It is intuitive to count the number of trees within each polygon because individual trees are countable vector points. However, how do we handle raster data? How can we create a Choropleth Map when our source data is a continuous grid?</p>
         
-        [cite_start]<p>You may notice that if you attempt to use the "Join Attributes by Location (Summary)" tool, you cannot select raster data[cite: 57]. [cite_start]Instead, we must use a different approach[cite: 58].</p>
+        <p>You may notice that if you attempt to use the "Join Attributes by Location (Summary)" tool, you cannot select raster data. Instead, we must use a different approach.</p>
 
         <h3>Loading and Understanding the Noise Data</h3>
-        [cite_start]<p>The first step is to load the raster data for today’s tutorial: <code>HORE_CONSOLIDATED_LDEN.tif</code>[cite: 59]. [cite_start]This dataset represents noise levels across Scotland[cite: 60].</p>
+        <p>The first step is to load the raster data for today’s tutorial: <code>HORE_CONSOLIDATED_LDEN.tif</code>. This dataset represents noise levels across Scotland.</p>
 
         <div class="step-box">
             <strong>Key Concept: What is $L_{den}$?</strong>
-            [cite_start]<p>The $L_{den}$ (Level Day-Evening-Night) is a European standard for expressing noise levels over a 24-hour period[cite: 61]. [cite_start]It is measured in decibels (dB) and applies specific "penalties" to evening and night-time noise to reflect the increased sensitivity of residents to disturbance during those hours[cite: 61]. [cite_start]Essentially, it provides a weighted average that represents the total noise burden on a specific area[cite: 61].</p>
+            <p>The $L_{den}$ (Level Day-Evening-Night) is a European standard for expressing noise levels over a 24-hour period. It is measured in decibels (dB) and applies specific "penalties" to evening and night-time noise to reflect the increased sensitivity of residents to disturbance during those hours. Essentially, it provides a weighted average that represents the total noise burden on a specific area.</p>
         </div>
 
         <div class="step-box">
             <strong>Key Step: Loading the Data</strong>
             <ul>
-                [cite_start]<li>At the top of the menu bar, go to Layer > Add Layer > Add Raster Layer[cite: 62].</li>
-                [cite_start]<li>Click the three dots (...) to the right of the "Source" box to browse[cite: 62].</li>
-                [cite_start]<li>Navigate to the tutorial folder: <code>Raster > Noise_Consolidated_LDEN > LDEN</code>[cite: 62].</li>
-                [cite_start]<li>Select <code>HORE_CONSOLIDATED_LDEN.tif</code> and click Open, then Add[cite: 62].</li>
+                <li>At the top of the menu bar, go to Layer > Add Layer > Add Raster Layer.</li>
+                <li>Click the three dots (...) to the right of the "Source" box to browse.</li>
+                <li>Navigate to the tutorial folder: <code>Raster > Noise_Consolidated_LDEN > LDEN</code>.</li>
+                <li>Select <code>HORE_CONSOLIDATED_LDEN.tif</code> and click Open, then Add.</li>
             </ul>
         </div>
 
-        [cite_start]<p>Once loaded, you will see in the Layers panel that the noise range varies from 0 to 87.98 dB[cite: 63]. [cite_start]To help visualise the gradient across the map, we can adjust the symbology[cite: 64]:</p>
+        <p>Once loaded, you will see in the Layers panel that the noise range varies from 0 to 87.98 dB. To help visualise the gradient across the map, we can adjust the symbology:</p>
 
         <div class="step-box">
             <strong>Key Step: Visualising the Noise Gradient</strong>
             <ul>
-                [cite_start]<li>Right-click the layer and select Properties[cite: 65].</li>
-                [cite_start]<li>Select Symbology from the left-hand menu[cite: 66].</li>
-                [cite_start]<li>Change the Render type to Singleband pseudocolor[cite: 66].</li>
-                [cite_start]<li>Set the Min to 0 and change the Max to 90 to capture all possible values[cite: 67].</li>
-                [cite_start]<li>Set the Interpolation to Linear[cite: 67].</li>
-                <li>Choose an intuitive Colour ramp. [cite_start]Since loud noise is generally undesirable, a ramp ranging from blue (low noise) through green to red (high noise) is effective[cite: 68].</li>
-                [cite_start]<li>You can further refine the classification intervals in the window below to control the dB brackets[cite: 69]. [cite_start]Once satisfied, click OK[cite: 70].</li>
+                <li>Right-click the layer and select Properties.</li>
+                <li>Select Symbology from the left-hand menu.</li>
+                <li>Change the Render type to Singleband pseudocolor.</li>
+                <li>Set the Min to 0 and change the Max to 90 to capture all possible values.</li>
+                <li>Set the Interpolation to Linear.</li>
+                <li>Choose an intuitive Colour ramp. Since loud noise is generally undesirable, a ramp ranging from blue (low noise) through green to red (high noise) is effective.</li>
+                <li>You can further refine the classification intervals in the window below to control the dB brackets. Once satisfied, click OK.</li>
             </ul>
         </div>
 
         <h3>Calculating Mean Noise per Ward</h3>
-        [cite_start]<p>How can we determine a representative average noise value for each ward boundary[cite: 71]? [cite_start]The most effective method for raster data is to calculate the mean of all cells falling within each boundary using Zonal Statistics[cite: 72].</p>
+        <p>How can we determine a representative average noise value for each ward boundary? The most effective method for raster data is to calculate the mean of all cells falling within each boundary using Zonal Statistics.</p>
 
         <div class="step-box">
             <strong>Key Step: Zonal Statistics</strong>
             <ul>
-                [cite_start]<li>Go to the Processing Toolbox and type "Zonal Statistics" in the search box[cite: 73].</li>
-                [cite_start]<li>Double-click Zonal Statistics[cite: 73].</li>
-                [cite_start]<li>Input layer: Choose Edinburgh_Ward_Boundaries[cite: 74].</li>
-                [cite_start]<li>Raster layer: Choose HORE_CONSOLIDATED_LDEN[cite: 74].</li>
-                [cite_start]<li>Statistics to calculate: Click the three dots and check mean[cite: 75].</li>
-                [cite_start]<li>Keep the remaining settings as default and click Run[cite: 76].</li>
+                <li>Go to the Processing Toolbox and type "Zonal Statistics" in the search box.</li>
+                <li>Double-click Zonal Statistics.</li>
+                <li>Input layer: Choose Edinburgh_Ward_Boundaries.</li>
+                <li>Raster layer: Choose HORE_CONSOLIDATED_LDEN.</li>
+                <li>Statistics to calculate: Click the three dots and check mean.</li>
+                <li>Keep the remaining settings as default and click Run.</li>
             </ul>
         </div>
 
-        [cite_start]<p>In the output, the layer may initially appear as a single colour[cite: 77]. [cite_start]To represent each polygon based on its mean noise level, you must adjust the symbology[cite: 77]:</p>
+        <p>In the output, the layer may initially appear as a single colour. To represent each polygon based on its mean noise level, you must adjust the symbology:</p>
 
         <div class="step-box">
             <strong>Key Step: Styling the Aggregated Noise</strong>
             <ul>
-                [cite_start]<li>Right-click the new layer and select Properties > Symbology[cite: 78].</li>
-                [cite_start]<li>Select Graduated from the top dropdown menu[cite: 78].</li>
-                [cite_start]<li>For Value, select _mean[cite: 78].</li>
-                [cite_start]<li>Set the Mode to Equal Interval[cite: 78].</li>
-                [cite_start]<li>Click Classify, then click OK[cite: 78].</li>
+                <li>Right-click the new layer and select Properties > Symbology.</li>
+                <li>Select Graduated from the top dropdown menu.</li>
+                <li>For Value, select _mean.</li>
+                <li>Set the Mode to Equal Interval.</li>
+                <li>Click Classify, then click OK.</li>
             </ul>
         </div>
 
-        [cite_start]<p>Your QGIS workspace should now clearly show which wards are noisier on average and which are quieter[cite: 81, 82].</p>
+        <p>Your QGIS workspace should now clearly show which wards are noisier on average and which are quieter.</p>
 
         <h3>Moving Toward Statistical Inference</h3>
-        [cite_start]<p>We now have a visual understanding of which wards have high tree counts and which suffer from higher noise levels[cite: 82]. [cite_start]However, how do we move beyond visual patterns[cite: 83]?</p>
+        <p>We now have a visual understanding of which wards have high tree counts and which suffer from higher noise levels. However, how do we move beyond visual patterns?</p>
 
-        [cite_start]<p>What if we want to know specifically if areas with more trees are associated with lower noise levels[cite: 83, 84]? [cite_start]To determine if this relationship is statistically significant—rather than just a coincidence—we need to perform an inferential statistical analysis[cite: 85]. [cite_start]How can we quantify this association[cite: 85]?</p>
+        <p>What if we want to know specifically if areas with more trees are associated with lower noise levels? To determine if this relationship is statistically significant—rather than just a coincidence—we need to perform an inferential statistical analysis. How can we quantify this association?</p>
     </section>
 
     <section id="bins">
