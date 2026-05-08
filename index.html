@@ -212,12 +212,99 @@
         <p>What if we want to know specifically if areas with more trees are associated with lower noise levels? To determine if this relationship is statistically significant—rather than just a coincidence—we need to perform an inferential statistical analysis. How can we quantify this association?</p>
     </section>
 
-    <section id="bins">
-        <h2>Constructing Bins for Aggregation</h2>
-        <p>To perform statistical inference, we construct uniform sample 'bins'. Each bin serves as an ID for an individual record in your dataset.</p>
+<section id="bins">
+        <h2>The Construction of Polygon Bins</h2>
+        <p>To perform our analysis, we need to construct small sample ‘bins’ and aggregate both the tree and noise data into them. As an analogy, you can think of each bin as an individual record for which you gather information to perform statistical analysis later.</p>
+
         <div class="step-box">
-            <strong>Key Step:</strong> 
-            Go to Vector > Research Tools > Create Grid. Select <code>Hexagon</code> and set spacing to 500 metres. Use Select by Location to trim grids that intersect with the ward boundaries.
+            <strong>Key Step: Creating the Hexagonal Grid</strong>
+            <ul>
+                <li>Go to Vector > Research Tools > Create Grid.</li>
+                <li>Grid Type: Choose Hexagon.</li>
+                <li>Grid extent: Click the dropdown arrow on the right and choose Calculate from Layer, then select Edinburgh_Ward_Boundaries.</li>
+                <li>Horizontal & Vertical Spacing: Input 500 for both, ensuring the units are set to metres.</li>
+                <li>Grid CRS: Ensure this is set to EPSG:27700 (British National Grid).</li>
+                <li>Click Run.</li>
+            </ul>
+        </div>
+
+        <p>Because the extent is a large rectangle, the grid will include hexagons in the Firth of Forth or outside the city limits. We need to trim the layer to remove these unnecessary cells:</p>
+
+        <div class="step-box">
+            <strong>Key Step: Trimming the Grid</strong>
+            <ul>
+                <li>Go to Vector > Research Tools > Select by Location.</li>
+                <li>Select features from: Choose Grid.</li>
+                <li>By comparing to the features from: Choose Edinburgh_Ward_Boundaries.</li>
+                <li>Leave other settings as default and click Run.</li>
+            </ul>
+        </div>
+
+        <p>The selected hexagons will turn yellow. To save only these relevant bins:</p>
+
+        <div class="step-box">
+            <strong>Key Step: Exporting the Trimmed Grid</strong>
+            <ul>
+                <li>Right-click the Grid layer and select Export > Save Selected Features As.</li>
+                <li>Format: Choose ESRI Shapefile.</li>
+                <li>File Name: Click the three dots, navigate to your folder, and name the layer Grids.</li>
+                <li>CRS: Ensure it is EPSG:27700.</li>
+                <li>Geometry type: Select Polygon and click OK.</li>
+            </ul>
+        </div>
+
+        <h2>Aggregation of Data into Hexagonal Bins</h2>
+        <p>Now, let’s aggregate the data into these hexagonal bins. Since you have already learned how to aggregate vector and raster layers into ward boundaries, you can apply the same techniques here.</p>
+
+        <div class="step-box">
+            <strong>Step 1: Aggregate Vector Tree Data</strong>
+            <ul>
+                <li>Open the Processing Toolbox and find Join attributes by location (summary).</li>
+                <li>Join to features in: Choose Grids.</li>
+                <li>By comparing to: Choose Trees.</li>
+                <li>Fields to summarise: Click the three dots and check ID.</li>
+                <li>Summaries to calculate: Click the three dots, check count, and click OK.</li>
+                <li>Click Run.</li>
+                <li>Right-click the new layer to view the Attribute Table and verify the information has joined correctly.</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <strong>Step 2: Aggregate Raster Noise Data</strong>
+            <ul>
+                <li>In the Processing Toolbox, search for and select Zonal Statistics.</li>
+                <li>Input layer: Choose the Joined layer (the one containing your tree counts).</li>
+                <li>Raster layer: Choose HORE_CONSOLIDATED_LDEN.</li>
+                <li>Statistics to calculate: Click the three dots, check mean and click OK.</li>
+                <li>Click Run.</li>
+                <li>Open the attribute table of the resulting layer. You should see two key columns: OBJECTID_count and _mean.</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <strong>Step 3: Export the Final Aggregated Layer</strong>
+            <ul>
+                <li>Export this as a permanent layer named Grid_Aggregated.</li>
+                <li>Right-click the layer, select Export > Save Features As.</li>
+                <li>Format: ESRI Shapefile.</li>
+                <li>CRS: EPSG:27700.</li>
+            </ul>
+        </div>
+
+        <h2>Cleaning Data in QGIS</h2>
+        <p>You will notice many NULL values in the attribute table. In statistical software (such as R), NULL represents "unknown" or "missing" data, which can lead to unreliable conclusions. In this case, a NULL simply means "no trees were found in this hexagon," so we should convert these to 0.</p>
+
+        <div class="step-box">
+            <strong>Key Step: Fixing NULL Values</strong>
+            <ul>
+                <li>Right-click the Grid_Aggregated layer and open the Attribute Table.</li>
+                <li>Click the Pencil icon (top left) to toggle Editing Mode.</li>
+                <li>Open the Field Calculator (the abacus icon).</li>
+                <li>Check Update existing field and select OBJECTID_count.</li>
+                <li>In the Expression box, enter: <code>coalesce("OBJECTID_count", 0)</code>. This replaces any NULL with 0 while keeping existing numbers as they are.</li>
+                <li>Click OK (or Apply).</li>
+                <li>Click the Pencil icon again to save your changes and exit editing mode.</li>
+            </ul>
         </div>
     </section>
 
