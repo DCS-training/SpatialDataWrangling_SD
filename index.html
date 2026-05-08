@@ -108,7 +108,8 @@
         <p>To create a Choropleth Map for the tree data relative to the Edinburgh ward boundaries, we first need to calculate the number of trees within each ward.</p>
 
         <p>To determine the tree count for each ward, we will use a powerful QGIS tool called "Join attributes by location (summary)". To access this tool, you must first open the Processing Toolbox window. From the top menu bar, go to Processing > Toolbox.</p>
-        
+        <img src="assets/images/Picture2.png" alt="Processing Toolbox">
+        <img src="assets/images/Picture3.png" alt="Join Attributes by Location (Summary)">
         <div class="step-box">
             <strong>Key Step: Aggregating Vector Point Data into Polygons</strong> 
             <p>On the right-hand side of the interface, you should now see the Processing Toolbox window. In the search bar at the top of this window, type "location" and double-click <strong>Join attributes by location (summary)</strong>.</p>
@@ -121,7 +122,7 @@
                 <li>Click Run.</li>
             </ul>
         </div>
-        
+        <img src="assets/images/Picture4.png" alt="Joined Layer">
         <p>A new layer named <strong>Joined layer</strong> will appear in your Layers panel. To display the number of trees per ward using a gradient, follow these steps:</p>
         
         <div class="step-box">
@@ -137,6 +138,8 @@
                 <li>Click OK (8) to apply the changes.</li>
             </ul>
         </div>
+        <img src="assets/images/Picture5.png" alt="Symbology for Joined Layer">
+        <img src="assets/images/Picture6.png" alt="Aggregated Vector Output">
     </section>
 
 <section id="raster">
@@ -177,6 +180,7 @@
                 <li>You can further refine the classification intervals in the window below to control the dB brackets. Once satisfied, click OK.</li>
             </ul>
         </div>
+        <img src="assets/images/Picture7.png" alt="Symbology for Raster Data">
 
         <h3>Calculating Mean Noise per Ward</h3>
         <p>How can we determine a representative average noise value for each ward boundary? The most effective method for raster data is to calculate the mean of all cells falling within each boundary using Zonal Statistics.</p>
@@ -192,19 +196,22 @@
                 <li>Keep the remaining settings as default and click Run.</li>
             </ul>
         </div>
+        <img src="assets/images/Picture8.png" alt="Zonal Statistics">
 
         <div class="step-box">
             <strong>Key Step: Styling the Aggregated Noise</strong>
             <ul>
-                <li>Right-click the new layer and select Properties > Symbology.</li>
-                <li>Select Graduated from the top dropdown menu.</li>
-                <li>For Value, select _mean.</li>
-                <li>Set the Mode to Equal Interval.</li>
-                <li>Click Classify, then click OK.</li>
+                <li>Right-click the new layer and select Properties > Symbology.(1)</li>
+                <li>Select Graduated from the top dropdown menu.(2)</li>
+                <li>For Value, select _mean.(3)</li>
+                <li>Set the Mode to Equal Interval.(4)</li>
+                <li>Click Classify(5), then click OK.(6)</li>
             </ul>
         </div>
+        <img src="assets/images/Picture9.png" alt="Symbology for Zonal Statistics">
 
         <p>Your QGIS workspace should now clearly show which wards are noisier on average and which are quieter.</p>
+        <img src="assets/images/Picture10.png" alt="Zonal Statistics Output">
 
         <h3>Moving Toward Statistical Inference</h3>
         <p>We now have a visual understanding of which wards have high tree counts and which suffer from higher noise levels. However, how do we move beyond visual patterns?</p>
