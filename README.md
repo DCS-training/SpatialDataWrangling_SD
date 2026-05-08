@@ -8,8 +8,9 @@ This is an intermediate course focusing on aggregating vector and raster data fo
 * Export aggregated dataset for further statistical analysis or quick exploration with consoles in QGIS.
 
 # What are you going to find in this repo
-* A zipped file of all the geospatial data and scripts required for the session
-* A word document that includes all the instructions for the session today.
+* A zipped file of all the geospatial data and scripts required for the session.
+* The <a href="https://dcs-training.github.io/SpatialDataWrangling_SD/index.html" target="_blank">link</a> to a website to the tutorial. Please click onto the link to view the instructions and steps to complete for the Silent Disco.
+* A folder that says assets/images. Please ignore contents inside as they are only to provide screenshots referenced into the main tutorial.
 
 # Installations
 You will need QGIS installed on your machine (the current Long-Term Release is version 3.10.10 ‘A Coruna’). You can download and install it from https://qgis.org/.
