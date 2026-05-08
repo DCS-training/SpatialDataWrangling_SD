@@ -63,17 +63,33 @@
         <p>After downloading the ZIP folder, please move it to your desktop for easy access and reference as you follow the tutorial. You will also need QGIS installed on your computer; please download the latest version from <a href="https://qgis.org/en/site/forusers/download.html" target="_blank">[here]</a>.</p>
     </section>
 
-    <section id="intro">
+<section id="intro">
         <h2>Introduction</h2>
         <p>What is spatial aggregation, and why do we aggregate spatial information?</p>
         
-        <p>Spatial aggregation is the process of grouping individual data points—such as tree locations or noise sensor readings—into summarised geographic units. Unlike standard data grouping (such as sorting sales by month), spatial aggregation utilises locational relationships to reveal patterns, trends, and clusters that are invisible at the individual point level.</p>
+        <p>Spatial aggregation is the process of grouping individual data points—such as tree locations or noise sensor readings—into summarised geographic units[cite: 20]. Unlike standard data grouping (such as sorting sales by month), spatial aggregation utilises locational relationships to reveal patterns, trends, and clusters that are invisible at the individual point level[cite: 21].</p>
 
-        <p>To put this into context, let’s open the folder you downloaded. Go to your desktop and open the unzipped <strong>SilentDiscoGeo</strong> folder. Inside, open <strong>ProjectGeo.qgz</strong> in QGIS (you should be able to open this by simply double-clicking the file if you have QGIS installed).</p>
+        <p>To put this into context, let’s open the folder you downloaded[cite: 22]. Go to your desktop and open the unzipped <strong>SilentDiscoGeo</strong> folder[cite: 23]. Inside, open <strong>ProjectGeo.qgz</strong> in QGIS (you should be able to open this by simply double-clicking the file if you have QGIS installed)[cite: 24].</p>
 
         <p>Once the project is open, follow these steps to add your layers:</p>
 
         <div class="step-box">
             <strong>Key Step: Adding Layers</strong> 
+            <p><strong>1. Add the Trees layer:</strong></p>
             <ul>
-                <li>Go to <strong>Layer > Add Layer > Add Vector Layer</strong>.
+                <li>Go to <strong>Layer > Add Layer > Add Vector Layer</strong>[cite: 26].</li>
+                <li>Click the <strong>three dots (browse button)</strong> next to the "Source" box[cite: 26].</li>
+                <li>Navigate to the <code>Vectors > Trees</code> folder and select <code>Tree.shp</code>[cite: 26].</li>
+                <li>Click <strong>Open</strong>, then <strong>Add</strong>.</li>
+            </ul>
+
+            <p><strong>2. Add the Edinburgh Ward Boundaries:</strong></p>
+            <ul>
+                <li>To provide spatial context, go to <strong>Layer > Add Layer > Add Vector Layer</strong>[cite: 27, 28].</li>
+                <li>Click the <strong>three dots</strong> next to the "Source" box[cite: 28].</li>
+                <li>Navigate to the <code>Vectors</code> folder and select <code>Edinburgh_Ward_Boundaries.shp</code>[cite: 28].</li>
+                <li>Click <strong>Open</strong>, then <strong>Add</strong>.</li>
+            </ul>
+        </div>
+        
+    </section>
