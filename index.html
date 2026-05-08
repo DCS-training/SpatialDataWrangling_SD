@@ -22,6 +22,8 @@
         a { color: #0969da; text-decoration: none; }
         a:hover { text-decoration: underline; }
     </style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
@@ -147,8 +149,8 @@
         <p>The first step is to load the raster data for today’s tutorial: <code>HORE_CONSOLIDATED_LDEN.tif</code>. This dataset represents noise levels across Scotland.</p>
 
         <div class="step-box">
-            <strong>Key Concept: What is $L_{den}$?</strong>
-            <p>The $L_{den}$ (Level Day-Evening-Night) is a European standard for expressing noise levels over a 24-hour period. It is measured in decibels (dB) and applies specific "penalties" to evening and night-time noise to reflect the increased sensitivity of residents to disturbance during those hours. Essentially, it provides a weighted average that represents the total noise burden on a specific area.</p>
+            <strong>Key Concept: What is \(L_{den}\)?</strong>
+            <p>The \(L_{den}\) (Level Day-Evening-Night) is a European standard for expressing noise levels over a 24-hour period. It is measured in decibels (dB) and applies specific "penalties" to evening and night-time noise to reflect the increased sensitivity of residents to disturbance during those hours. Essentially, it provides a weighted average that represents the total noise burden on a specific area.</p>
         </div>
 
         <div class="step-box">
@@ -190,8 +192,6 @@
                 <li>Keep the remaining settings as default and click Run.</li>
             </ul>
         </div>
-
-        <p>In the output, the layer may initially appear as a single colour. To represent each polygon based on its mean noise level, you must adjust the symbology:</p>
 
         <div class="step-box">
             <strong>Key Step: Styling the Aggregated Noise</strong>
@@ -308,19 +308,109 @@
         </div>
     </section>
 
-    <section id="exploration">
+<section id="exploration">
         <h2>Exploration of Spatial Relationship in QGIS</h2>
-        <p>We can use the Python console (Ctrl + Alt + P) to run a Spearman's Rho correlation to see if hexagons with more trees tend to be noisier or quieter.</p>
-        <pre># Statistical Result Analysis
-Spearman's Rho (ρ): 0.0587
-P-Value: 0.0427
-Significance: STATISTICALLY SIGNIFICANT</pre>
-        <p>The positive relationship suggests hexagons with higher noise levels also tend to have a higher density of trees. This likely reflects roadside planting on major arterial roads intended to shield housing.</p>
+        <p>There are many ways to run correlations between variables. You could export the aggregated layer as a CSV file to analyse it using external software. You can then use this file for further analysis in R, Python, or even SPSS[cite: 132, 135].</p>
+
+        <div class="step-box">
+            <strong>Key Step: Exporting Data for External Analysis</strong>
+            <ul>
+                <li>Right-click the layer containing your aggregated data (Grid_Aggregated) and select Export > Save Features As[cite: 133].</li>
+                <li>For the format, choose Comma Separated Value [CSV][cite: 134].</li>
+                <li>Click the three dots next to the file name box, navigate to your desired folder path, and name the file Aggregated_Geographies[cite: 134].</li>
+            </ul>
+        </div>
+
+        <p>However, if you simply want a quick exploration of the correlation between these variables, you can utilise the Python console within QGIS[cite: 136].</p>
+
+        <div class="step-box">
+            <strong>Key Step: Using the Python Console</strong>
+            <ul>
+                <li>Press Ctrl + Alt + P to open the Python console window[cite: 137].</li>
+                <li>Copy and paste the code block below into the input line at the bottom of the console[cite: 138]:</li>
+            </ul>
+        </div>
+
+        <pre><code>from qgis.core import QgsProject
+from scipy import stats
+
+# 1. Configuration - Matching your exact field names
+layer_name = 'Grid_Aggregated' 
+tree_field = 'OBJECTID_c' # Matched to your log output
+noise_field = '_mean'
+
+layers = QgsProject.instance().mapLayersByName(layer_name)
+
+if not layers:
+    print(f"ERROR: Layer '{layer_name}' not found.")
+else:
+    layer = layers[0]
+    fields = [field.name() for field in layer.fields()]
+    
+    if tree_field not in fields:
+        print(f"ERROR: Column '{tree_field}' not found. Available: {fields}")
+    else:
+        trees = []
+        noise = []
+
+        # 2. Extract and Clean Data
+        for f in layer.getFeatures():
+            t_val = f[tree_field] if f[tree_field] is not None else 0
+            n_val = f[noise_field]
+            
+            # Skip rows where noise is 0 or NULL
+            if n_val is not None and n_val > 0:
+                trees.append(t_val)
+                noise.append(n_val)
+
+        # 3. Calculate Correlation
+        if len(trees) > 5:
+            rho, p_val = stats.spearmanr(trees, noise)
+            
+            print("\n" + "="*45)
+            print("   EDINBURGH TREE & NOISE CORRELATION")
+            print("="*45)
+            print(f"Hexagons Sampled:   {len(trees)}")
+            print(f"Spearman's Rho (ρ): {rho:.4f}")
+            print(f"P-Value:            {p_val:.4e}")
+            print("-" * 45)
+            
+            if p_val < 0.05:
+                sig_status = "STATISTICALLY SIGNIFICANT"
+                direction = "NEGATIVE (Less noise where more trees)" if rho < 0 else "POSITIVE (More trees in noisy areas)"
+            else:
+                sig_status = "NOT STATISTICALLY SIGNIFICANT"
+                direction = "No reliable pattern found."
+                
+            print(f"Significance: {sig_status}")
+            print(f"Conclusion:   {direction}")
+            print("="*45)</code></pre>
+
+        <div class="step-box">
+            <strong>Key Step: Run the Script</strong>
+            <ul>
+                <li>After pasting the code, click the play button to run the script[cite: 183].</li>
+            </ul>
+        </div>
+
+        <p>Essentially, you are running a Spearman’s Rho correlation to see if hexagons with more trees tend to be noisier or quieter[cite: 184]. To our surprise, the Spearman's Rho is 0.0587. This value represents the strength and direction of the relationship[cite: 185]. Because the number is positive, it means that as one variable increases, the other tends to increase as well[cite: 186]. In this context: hexagons with higher noise levels also tend to have a higher density of trees[cite: 187].</p>
+
+        <p>In terms of strength, on a scale of 0 to 1, 0.0587 is very weak[cite: 188]. While the trend exists, it is not a "tight" relationship; there are plenty of noisy areas with few trees and quiet areas with many trees that don't fit this rule[cite: 189, 190]. The p-value is approximately 0.0427. In statistics, the standard threshold for "significance" is usually 0.05[cite: 191]. Since 0.0427 is less than 0.05, the result is considered statistically significant[cite: 192]. This means there is less than a 5% chance that this positive relationship happened by pure accident[cite: 193]. The pattern, though weak, is "real" within your dataset of more than 1,000 hexagons[cite: 194].</p>
     </section>
 
-    <section id="notes">
+<section id="notes">
         <h2>Notes</h2>
-        <p>Null values represent missing data; convert these to 0 using the Field Calculator with <code>coalesce("OBJECTID_count", 0)</code>. Note that standard statistics assume independent observations, but geography often features spatial dependency (autocorrelation), which can bias results.</p>
+        <p>The conclusion "More trees in noisy areas" might seem like a mistake, but it reflects the urban reality of Edinburgh[cite: 195]. This might be because of roadside planting[cite: 196]. Specifically, many of Edinburgh’s noisiest areas are major arterial roads or "A-roads" which often have significant "street tree" planting or wooded verges specifically designed to shield nearby houses[cite: 196]. Very quiet areas might be open paved squares or industrial zones with no trees, while the busier, noisier residential corridors often have mature private gardens or public parks nearby[cite: 197].</p>
+
+        <p>While the results of our Spearman analysis give us a fascinating starting point, it is important to treat these figures as an exploratory step rather than a final answer[cite: 198]. The biggest challenge when using simple correlations for geography is a concept called spatial dependency (or spatial autocorrelation)[cite: 199]. Standard statistics assume that each of our 1,193 hexagons is an independent "island" that doesn't affect its neighbour[cite: 200]. In reality, we know that if a hexagon covers a busy road like Princes Street, the hexagons next to it will also be noisy[cite: 201]. This "bleeding" of data across boundaries violates the basic rules of standard correlation, which can sometimes make relationships look significant when they are actually just a byproduct of how the city is laid out[cite: 202].</p>
+
+        <p>To truly address these issues, more advanced spatial correlation methods are needed[cite: 203]. Techniques such as Geographically Weighted Regression (GWR) or Bivariate Local Moran’s I allow the computer to look at how the relationship between trees and noise changes from one neighbourhood to another[cite: 204]. Please refer to the references below for more information.</p>
+
+        <p>For students, the takeaway is clear: a Spearman correlation is a brilliant tool for "spotting" a pattern, but spatial tools are required to "prove" it by accounting for the complex, overlapping layers of a living city[cite: 205].</p>
+
+        <p>Please note that these are analysis in development by the training institute[cite: 206].</p>
+        
+        <p>Thank you for your time and we look forward to seeing you in future teaching sessions[cite: 207].</p>
     </section>
 
     <section id="refs">
