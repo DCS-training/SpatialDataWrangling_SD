@@ -19,6 +19,8 @@
         .step-box strong { color: #1a7f37; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.85rem; }
         section { scroll-margin-top: 40px; }
         pre { background: #f6f8fa; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 13px; border: 1px solid #d0d7de; }
+        a { color: #0969da; text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -40,73 +42,38 @@
 <main id="content">
     <section id="goals">
         <h1>Spatial Data Wrangling in QGIS</h1>
-        <p>Many types of sources used by social scientists are inherently spatial, treating spatial data as a primary variable. We might be interested, for instance, in how tree density is associated with indicators of wellbeing, or in environmental injustice, where poorer neighbourhoods are associated with worse environmental conditions, such as noise. Various methods exist to address these research questions. One such method involves ‘binning’ disparate spatial datasets into uniform grids using QGIS. This process allows you to standardise geographic information, making it possible to compare variables originally collected in different formats and to perform further inferential analysis. This tutorial will walk you through the steps to create these ‘bins’ and perform relevant visualisation and preliminary statistics to aid you in exploring your own research questions.</p>
-        <h2>Lesson Goals</h2>
+        
+        <p>Many types of sources used by social scientists are inherently spatial where spatial data is treated as a primary variable. We could be interested in how for instance, tree density is associated with indicators of wellbeing; environmental injustice where poorer neighbourhoods are associated with worse environmental conditions such as noise. There are different methods looking at these research questions.</p>
+
+        <p>One of the methods is to ‘bin’ disparate spatial datasets into a uniform grids using QGIS. This process allows you to standardise geographic information, making it possible to compare variables that were originally collected in different formats and to perform further inferential analysis.</p>
+
+        <p>This tutorial is going to walk you through the steps to create these ‘bins’ and to perform relevant visualisation and preliminary statistics that hopefully could aid in performing your own research questions. Here are the lesson goals:</p>
+
         <ul>
-            <li>To aggregate vector and raster information to polygons to aid in visualising patterns of geospatial information[cite: 11].</li>
-            <li>To construct polygon bins and apply spatial join techniques to aggregate vector-based point data[cite: 12].</li>
-            <li>To extract and align raster data with polygon bins using zonal operations[cite: 13].</li>
-            <li>To export aggregated datasets for further statistical analysis[cite: 14].</li>
+            <li>To aggregate vector and raster information into polygons to aid in the visualisation of geospatial patterns.</li>
+            <li>To construct polygon bins and apply spatial join techniques, aggregating vector-based point data to create a multi-variable dataset.</li>
+            <li>To extract and align raster data with polygon bins using zonal operations to enhance multi-variable datasets.</li>
+            <li>To export aggregated datasets for further statistical analysis or rapid exploration using QGIS consoles.</li>
         </ul>
+
+        <p>This tutorial forms part of the training in geospatial analysis and builds upon foundational skills in GIS, particularly adding layers and managing Coordinate Reference Systems (CRS).</p>
+
+        <p>Before beginning, please download <a href="#">SilentDiscoGeo (.zip)</a>. This tutorial assumes you are working with this specific set of environmental data relating to the City of Edinburgh and wish to aggregate this information for statistical analysis.</p>
+
+        <p>After downloading the ZIP folder, please move it to your desktop for easy access and reference as you follow the tutorial. You will also need QGIS installed on your computer; please download the latest version from <a href="https://qgis.org/en/site/forusers/download.html" target="_blank">[here]</a>.</p>
     </section>
 
     <section id="intro">
         <h2>Introduction</h2>
-        <p>Spatial aggregation is the process of grouping individual data points—such as tree locations or noise sensors—into summarised geographic units[cite: 20]. This reveals patterns, trends, and clusters that are invisible at the individual point level[cite: 21].</p>
-        <div class="step-box">
-            <strong>Getting Started:</strong> Open <code>ProjectGeo.qgz</code> in QGIS[cite: 24]. Add <code>Tree.shp</code> and <code>Edinburgh_Ward_Boundaries.shp</code> via <strong>Layer > Add Layer > Add Vector Layer</strong>[cite: 26, 27, 28].
-        </div>
-    </section>
+        <p>What is spatial aggregation, and why do we aggregate spatial information?</p>
+        
+        <p>Spatial aggregation is the process of grouping individual data points—such as tree locations or noise sensor readings—into summarised geographic units. Unlike standard data grouping (such as sorting sales by month), spatial aggregation utilises locational relationships to reveal patterns, trends, and clusters that are invisible at the individual point level.</p>
 
-    <section id="vector">
-        <h2>Vector Aggregation</h2>
-        <p>To create a choropleth map for tree data, we first calculate the number of trees in each Ward Boundary[cite: 36].</p>
+        <p>To put this into context, let’s open the folder you downloaded. Go to your desktop and open the unzipped <strong>SilentDiscoGeo</strong> folder. Inside, open <strong>ProjectGeo.qgz</strong> in QGIS (you should be able to open this by simply double-clicking the file if you have QGIS installed).</p>
+
+        <p>Once the project is open, follow these steps to add your layers:</p>
+
         <div class="step-box">
-            <strong>Key Step:</strong> Open the <strong>Processing Toolbox</strong> (Processing > Toolbox) and search for <code>Join attributes by location (summary)</code>[cite: 39, 41]. 
+            <strong>Key Step: Adding Layers</strong> 
             <ul>
-                <li><strong>Join to features in:</strong> Edinburgh_Ward_Boundaries[cite: 42].</li>
-                <li><strong>By comparing to:</strong> Trees[cite: 42].</li>
-                <li><strong>Summaries to calculate:</strong> count[cite: 44].</li>
-            </ul>
-        </div>
-        <p>Style the result by right-clicking the layer > <strong>Properties > Symbology</strong>. Choose <strong>Graduated</strong> and select <code>OBJECTID_count</code> as the value[cite: 48, 49, 50].</p>
-    </section>
-
-    <section id="raster">
-        <h2>Raster Aggregation</h2>
-        <p>Raster data, like the noise level (LDEN recorded in dB), cannot be processed with the standard Join tool[cite: 57, 61].</p>
-        <div class="step-box">
-            <strong>Key Step:</strong> Load <code>HORE_CONSOLIDATED_LDEN.tif</code>[cite: 59]. Use the <code>Zonal Statistics</code> tool from the Processing Toolbox[cite: 73]. Set the <strong>Input layer</strong> to the boundaries and the <strong>Raster layer</strong> to the noise data, then check <strong>mean</strong>[cite: 74, 75].
-        </div>
-    </section>
-
-    <section id="bins">
-        <h2>Constructing Bins for Aggregation</h2>
-        <p>To perform statistical inference, we must construct uniform sample 'bins'[cite: 87]. Each bin acts as an ID for an individual observation in your analysis[cite: 88].</p>
-        <div class="step-box">
-            <strong>Key Step:</strong> Go to <strong>Vector > Research Tools > Create Grid</strong>[cite: 89]. Select <code>Hexagon</code> and set spacing to 500 meters[cite: 90, 91]. Use <strong>Select by Location</strong> to trim the grid to the city boundaries[cite: 96].
-        </div>
-    </section>
-
-    <section id="exploration">
-        <h2>Exploration of Spatial Relationship in QGIS</h2>
-        <p>We use the Python console (Ctrl + Alt + P) to calculate correlation[cite: 136, 137].</p>
-        <pre># Summary of Spearman Analysis
-# Rho: 0.0587 (Positive relationship)
-# P-Value: 0.0427 (Statistically significant)</pre>
-        <p>Surprisingly, noisier areas tend to have a higher density of trees in Edinburgh, likely due to roadside planting on arterial roads[cite: 195, 196].</p>
-    </section>
-
-    <section id="notes">
-        <h2>Notes</h2>
-        <p>Null values in your data represent missing information[cite: 122]. Use the Field Calculator with <code>coalesce("OBJECTID_count", 0)</code> to fix these[cite: 126, 127]. Always be aware of spatial autocorrelation, which can make relationships look significant when they are a byproduct of urban layout[cite: 199, 202].</p>
-    </section>
-
-    <section id="refs">
-        <h2>References</h2>
-        <p>This tutorial uses data provided in the <code>SilentDiscoGeo</code> package, relevant to the City of Edinburgh[cite: 16]. Analysis and training developed by the training institute[cite: 206].</p>
-    </section>
-</main>
-
-</body>
-</html>
+                <li>Go to <strong>Layer > Add Layer > Add Vector Layer</strong>.
