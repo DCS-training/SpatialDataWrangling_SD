@@ -229,11 +229,12 @@
                 <li>Go to Vector > Research Tools > Create Grid.</li>
                 <li>Grid Type: Choose Hexagon.</li>
                 <li>Grid extent: Click the dropdown arrow on the right and choose Calculate from Layer, then select Edinburgh_Ward_Boundaries.</li>
-                <li>Horizontal & Vertical Spacing: Input 500 for both, ensuring the units are set to metres.</li>
+                <li>Horizontal & Vertical Spacing: Input 500 for both (250m/500m are typically suitable for urban studies), ensuring the units are set to metres.</li>
                 <li>Grid CRS: Ensure this is set to EPSG:27700 (British National Grid).</li>
                 <li>Click Run.</li>
             </ul>
         </div>
+        <img src="assets/images/Picture11.png" alt="Inputs for Create Grids">
 
         <p>Because the extent is a large rectangle, the grid will include hexagons in the Firth of Forth or outside the city limits. We need to trim the layer to remove these unnecessary cells:</p>
 
@@ -246,6 +247,7 @@
                 <li>Leave other settings as default and click Run.</li>
             </ul>
         </div>
+        <img src="assets/images/Picture12.png" alt="Select by Location">
 
         <p>The selected hexagons will turn yellow. To save only these relevant bins:</p>
 
@@ -259,6 +261,8 @@
                 <li>Geometry type: Select Polygon and click OK.</li>
             </ul>
         </div>
+        <p>Now, you should have a layer like the following screenshot</p>
+        <img src="assets/images/Picture13.png" alt="Grids Selected">
 
         <h2>Aggregation of Data into Hexagonal Bins</h2>
         <p>Now, let’s aggregate the data into these hexagonal bins. Since you have already learned how to aggregate vector and raster layers into ward boundaries, you can apply the same techniques here.</p>
@@ -313,6 +317,7 @@
                 <li>Click the Pencil icon again to save your changes and exit editing mode.</li>
             </ul>
         </div>
+        <img src="assets/images/Picture14.png" alt="Codes">
     </section>
 
 <section id="exploration">
