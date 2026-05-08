@@ -310,24 +310,24 @@
 
 <section id="exploration">
         <h2>Exploration of Spatial Relationship in QGIS</h2>
-        <p>There are many ways to run correlations between variables. You could export the aggregated layer as a CSV file to analyse it using external software. You can then use this file for further analysis in R, Python, or even SPSS[cite: 132, 135].</p>
+        <p>There are many ways to run correlations between variables. You could export the aggregated layer as a CSV file to analyse it using external software. You can then use this file for further analysis in R, Python, or even SPSS.</p>
 
         <div class="step-box">
             <strong>Key Step: Exporting Data for External Analysis</strong>
             <ul>
-                <li>Right-click the layer containing your aggregated data (Grid_Aggregated) and select Export > Save Features As[cite: 133].</li>
-                <li>For the format, choose Comma Separated Value [CSV][cite: 134].</li>
-                <li>Click the three dots next to the file name box, navigate to your desired folder path, and name the file Aggregated_Geographies[cite: 134].</li>
+                <li>Right-click the layer containing your aggregated data (Grid_Aggregated) and select Export > Save Features As.</li>
+                <li>For the format, choose Comma Separated Value [CSV].</li>
+                <li>Click the three dots next to the file name box, navigate to your desired folder path, and name the file Aggregated_Geographies.</li>
             </ul>
         </div>
 
-        <p>However, if you simply want a quick exploration of the correlation between these variables, you can utilise the Python console within QGIS[cite: 136].</p>
+        <p>However, if you simply want a quick exploration of the correlation between these variables, you can utilise the Python console within QGIS.</p>
 
         <div class="step-box">
             <strong>Key Step: Using the Python Console</strong>
             <ul>
-                <li>Press Ctrl + Alt + P to open the Python console window[cite: 137].</li>
-                <li>Copy and paste the code block below into the input line at the bottom of the console[cite: 138]:</li>
+                <li>Press Ctrl + Alt + P to open the Python console window.</li>
+                <li>Copy and paste the code block below into the input line at the bottom of the console:</li>
             </ul>
         </div>
 
@@ -389,28 +389,28 @@ else:
         <div class="step-box">
             <strong>Key Step: Run the Script</strong>
             <ul>
-                <li>After pasting the code, click the play button to run the script[cite: 183].</li>
+                <li>After pasting the code, click the play button to run the script.</li>
             </ul>
         </div>
 
-        <p>Essentially, you are running a Spearman’s Rho correlation to see if hexagons with more trees tend to be noisier or quieter[cite: 184]. To our surprise, the Spearman's Rho is 0.0587. This value represents the strength and direction of the relationship[cite: 185]. Because the number is positive, it means that as one variable increases, the other tends to increase as well[cite: 186]. In this context: hexagons with higher noise levels also tend to have a higher density of trees[cite: 187].</p>
+        <p>Essentially, you are running a Spearman’s Rho correlation to see if hexagons with more trees tend to be noisier or quieter. To our surprise, the Spearman's Rho is 0.0587. This value represents the strength and direction of the relationship. Because the number is positive, it means that as one variable increases, the other tends to increase as well. In this context: hexagons with higher noise levels also tend to have a higher density of trees.</p>
 
-        <p>In terms of strength, on a scale of 0 to 1, 0.0587 is very weak[cite: 188]. While the trend exists, it is not a "tight" relationship; there are plenty of noisy areas with few trees and quiet areas with many trees that don't fit this rule[cite: 189, 190]. The p-value is approximately 0.0427. In statistics, the standard threshold for "significance" is usually 0.05[cite: 191]. Since 0.0427 is less than 0.05, the result is considered statistically significant[cite: 192]. This means there is less than a 5% chance that this positive relationship happened by pure accident[cite: 193]. The pattern, though weak, is "real" within your dataset of more than 1,000 hexagons[cite: 194].</p>
+        <p>In terms of strength, on a scale of 0 to 1, 0.0587 is very weak. While the trend exists, it is not a "tight" relationship; there are plenty of noisy areas with few trees and quiet areas with many trees that don't fit this rule. The p-value is approximately 0.0427. In statistics, the standard threshold for "significance" is usually 0.05. Since 0.0427 is less than 0.05, the result is considered statistically significant. This means there is less than a 5% chance that this positive relationship happened by pure accident. The pattern, though weak, is "real" within your dataset of more than 1,000 hexagons.</p>
     </section>
 
 <section id="notes">
         <h2>Notes</h2>
-        <p>The conclusion "More trees in noisy areas" might seem like a mistake, but it reflects the urban reality of Edinburgh[cite: 195]. This might be because of roadside planting[cite: 196]. Specifically, many of Edinburgh’s noisiest areas are major arterial roads or "A-roads" which often have significant "street tree" planting or wooded verges specifically designed to shield nearby houses[cite: 196]. Very quiet areas might be open paved squares or industrial zones with no trees, while the busier, noisier residential corridors often have mature private gardens or public parks nearby[cite: 197].</p>
+        <p>The conclusion "More trees in noisy areas" might seem like a mistake, but it reflects the urban reality of Edinburgh. This might be because of roadside planting. Specifically, many of Edinburgh’s noisiest areas are major arterial roads or "A-roads" which often have significant "street tree" planting or wooded verges specifically designed to shield nearby houses. Very quiet areas might be open paved squares or industrial zones with no trees, while the busier, noisier residential corridors often have mature private gardens or public parks nearby.</p>
 
-        <p>While the results of our Spearman analysis give us a fascinating starting point, it is important to treat these figures as an exploratory step rather than a final answer[cite: 198]. The biggest challenge when using simple correlations for geography is a concept called spatial dependency (or spatial autocorrelation)[cite: 199]. Standard statistics assume that each of our 1,193 hexagons is an independent "island" that doesn't affect its neighbour[cite: 200]. In reality, we know that if a hexagon covers a busy road like Princes Street, the hexagons next to it will also be noisy[cite: 201]. This "bleeding" of data across boundaries violates the basic rules of standard correlation, which can sometimes make relationships look significant when they are actually just a byproduct of how the city is laid out[cite: 202].</p>
+        <p>While the results of our Spearman analysis give us a fascinating starting point, it is important to treat these figures as an exploratory step rather than a final answer. The biggest challenge when using simple correlations for geography is a concept called spatial dependency (or spatial autocorrelation). Standard statistics assume that each of our 1,193 hexagons is an independent "island" that doesn't affect its neighbour. In reality, we know that if a hexagon covers a busy road like Princes Street, the hexagons next to it will also be noisy. This "bleeding" of data across boundaries violates the basic rules of standard correlation, which can sometimes make relationships look significant when they are actually just a byproduct of how the city is laid out.</p>
 
-        <p>To truly address these issues, more advanced spatial correlation methods are needed[cite: 203]. Techniques such as Geographically Weighted Regression (GWR) or Bivariate Local Moran’s I allow the computer to look at how the relationship between trees and noise changes from one neighbourhood to another[cite: 204]. Please refer to the references below for more information.</p>
+        <p>To truly address these issues, more advanced spatial correlation methods are needed. Techniques such as Geographically Weighted Regression (GWR) or Bivariate Local Moran’s I allow the computer to look at how the relationship between trees and noise changes from one neighbourhood to another. Please refer to the references below for more information.</p>
 
-        <p>For students, the takeaway is clear: a Spearman correlation is a brilliant tool for "spotting" a pattern, but spatial tools are required to "prove" it by accounting for the complex, overlapping layers of a living city[cite: 205].</p>
+        <p>For students, the takeaway is clear: a Spearman correlation is a brilliant tool for "spotting" a pattern, but spatial tools are required to "prove" it by accounting for the complex, overlapping layers of a living city.</p>
 
-        <p>Please note that these are analysis in development by the training institute[cite: 206].</p>
+        <p>Please note that these are analysis in development by the training institute.</p>
         
-        <p>Thank you for your time and we look forward to seeing you in future teaching sessions[cite: 207].</p>
+        <p>Thank you for your time and we look forward to seeing you in future teaching sessions.</p>
     </section>
 
 <section id="refs">
