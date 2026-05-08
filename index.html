@@ -5,55 +5,157 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spatial Data Wrangling in QGIS</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; display: flex; margin: 0; color: #24292f; }
+        /* Base Layout */
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; 
+            display: flex; 
+            margin: 0; 
+            color: #24292f; 
+            background-color: #ffffff;
+        }
         
-        /* Sidebar Navigation */
-        #sidebar { width: 280px; background: #f6f8fa; border-right: 1px solid #d0d7de; height: 100vh; position: fixed; padding: 20px; overflow-y: auto; }
-        #sidebar h2 { font-size: 1.2rem; color: #0969da; }
+        /* Sidebar Navigation (Left Side) */
+        #sidebar { 
+            width: 280px; 
+            background: #f6f8fa; 
+            border-right: 1px solid #d0d7de; 
+            height: 100vh; 
+            position: fixed; 
+            padding: 30px 20px; 
+            overflow-y: auto; 
+        }
+        #sidebar h2 { 
+            font-size: 1.1rem; 
+            color: #1a7f37; /* Forest Green Heading */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
         #sidebar ul { list-style: none; padding: 0; }
-        #sidebar li { margin: 15px 0; }
-        #sidebar a { text-decoration: none; color: #1f2328; font-weight: 500; }
-        #sidebar a:hover { color: #0969da; }
+        #sidebar li { margin: 12px 0; border-bottom: 1px solid #eeeeee; padding-bottom: 8px; }
+        #sidebar a { 
+            text-decoration: none; 
+            color: #1f2328; 
+            font-weight: 500; 
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+        #sidebar a:hover { color: #1a7f37; }
 
         /* Main Content Area */
-        #content { margin-left: 320px; padding: 40px; max-width: 800px; line-height: 1.6; }
-        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; }
-        .step-box { background: #fdf6e3; border-left: 5px solid #b58900; padding: 15px; margin: 20px 0; }
-        img { max-width: 100%; height: auto; border: 1px solid #d0d7de; border-radius: 6px; margin: 20px 0; }
-        code { background: #f1f1f1; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+        #content { 
+            margin-left: 320px; 
+            padding: 60px; 
+            max-width: 850px; 
+            line-height: 1.7; 
+        }
+        
+        h1 { border-bottom: 2px solid #1a7f37; padding-bottom: 10px; color: #111; }
+        h2 { margin-top: 40px; color: #1a7f37; border-left: 4px solid #1a7f37; padding-left: 15px; }
+        
+        /* Green Key Step Box */
+        .step-box { 
+            background: #f0fff4; /* Very Light Green */
+            border-left: 5px solid #2da44e; /* Vibrant Green accent */
+            border-radius: 4px;
+            padding: 20px; 
+            margin: 25px 0; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .step-box strong { color: #1a7f37; display: block; margin-bottom: 5px; text-transform: uppercase; font-size: 0.85rem; }
+
+        img { 
+            max-width: 100%; 
+            height: auto; 
+            border: 1px solid #d0d7de; 
+            border-radius: 8px; 
+            margin: 30px 0; 
+            display: block;
+        }
+
+        code { 
+            background: #eff1f3; 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 90%;
+        }
+
+        /* Scroll margin to prevent sidebar overlapping headers when clicking links */
+        section { scroll-margin-top: 40px; }
     </style>
 </head>
 <body>
 
 <nav id="sidebar">
-    <h2>QGIS Tutorial</h2>
+    <h2>Tutorial Menu</h2>
     <ul>
-        <li><a href="#intro">1. Introduction</a></li>
-        <li><a href="#aggregation">2. Vector Aggregation</a></li>
-        <li><a href="#raster">3. Raster Analysis</a></li>
-        <li><a href="#bins">4. Constructing Bins</a></li>
-        <li><a href="#stats">5. Statistical Exploration</a></li>
+        <li><a href="#goals">1. Lesson Goals</a></li>
+        <li><a href="#intro">2. Introduction</a></li>
+        <li><a href="#vector">3. Vector Aggregation</a></li>
+        <li><a href="#raster">4. Raster Aggregation</a></li>
+        <li><a href="#bins">5. Constructing Bins for Aggregation</a></li>
+        <li><a href="#exploration">6. Exploration of Spatial Relationship</a></li>
+        <li><a href="#notes">7. Notes</a></li>
+        <li><a href="#refs">8. References</a></li>
     </ul>
 </nav>
 
 <main id="content">
-    <section id="intro">
+    <section id="goals">
         <h1>Spatial Data Wrangling in QGIS</h1>
-        <p>This tutorial assists social scientists in treating spatial data as a primary variable[cite: 3]. You will learn to aggregate vector and raster information into polygons to visualise patterns of geospatial information[cite: 11].</p>
+        <p>This tutorial forms part of the training in geospatial analysis, building upon foundational GIS skills like layer management and Coordinate Reference Systems (CRS)[cite: 15].</p>
+        <h2>Lesson Goals</h2>
+        <ul>
+            <li>Aggregate vector and raster information to polygons[cite: 11].</li>
+            <li>Construct polygon bins and apply spatial join techniques[cite: 12].</li>
+            <li>Extract and align raster data using zonal operations[cite: 13].</li>
+            <li>Export aggregated datasets for exploration[cite: 14].</li>
+        </ul>
     </section>
 
-    <section id="aggregation">
-        <h2>Aggregating Vector Point Data</h2>
-        <p>To create a choropleth map for tree data, we first calculate the number of trees per Ward Boundary[cite: 36].</p>
-        <div class="step-box">
-            <strong>Key Step:</strong> Use the <code>Join attributes by location (summary)</code> tool[cite: 37]. Select <code>count</code> for the summary to calculate the unique tree count[cite: 44].
-        </div>
-        </section>
+    <section id="intro">
+        <h2>Introduction</h2>
+        <p>Spatial aggregation is the process of grouping individual data points into summarised geographic units to reveal patterns invisible at the individual point level[cite: 20, 21].</p>
+    </section>
 
-    <section id="stats">
-        <h2>Statistical Exploration</h2>
-        <p>Running a Spearman’s Rho correlation helps determine if areas with more trees are associated with lower noise[cite: 83, 184].</p>
-        <p>In Edinburgh, our results showed a weak positive relationship (0.0587), suggesting noisier areas often have more trees due to roadside planting[cite: 185, 196].</p>
+    <section id="vector">
+        <h2>Vector Aggregation</h2>
+        <p>To count trees within ward boundaries, we use spatial join techniques.</p>
+        <div class="step-box">
+            <strong>Key Step:</strong> Use the <code>Join attributes by location (summary)</code> tool. Set the Input Layer to your ward boundaries and the Join Layer to your tree points[cite: 37, 42].
+        </div>
+    </section>
+
+    <section id="raster">
+        <h2>Raster Aggregation</h2>
+        <p>Raster data, such as noise levels (LDEN), requires calculating mean values within polygons.</p>
+        <div class="step-box">
+            <strong>Key Step:</strong> Open the <code>Zonal Statistics</code> tool. Select your polygons as the input and the <code>.tif</code> file as your raster to calculate the <code>mean</code>[cite: 73, 74].
+        </div>
+    </section>
+
+    <section id="bins">
+        <h2>Constructing Bins for Aggregation</h2>
+        <p>Hexagonal bins provide a uniform grid for more precise statistical comparison than irregular administrative boundaries[cite: 87, 88].</p>
+        <div class="step-box">
+            <strong>Key Step:</strong> Use <code>Create Grids</code> (Vector > Research Tools) and set the type to <code>Hexagon</code> with 500m spacing[cite: 89, 90].
+        </div>
+    </section>
+
+    <section id="exploration">
+        <h2>Exploration of Spatial Relationship in QGIS</h2>
+        <p>We use Spearman’s Rho to determine if tree density correlates with noise levels[cite: 184, 185]. Our findings in Edinburgh suggest a weak positive relationship (0.0587), often due to roadside planting[cite: 187, 196].</p>
+    </section>
+
+    <section id="notes">
+        <h2>Notes</h2>
+        <p>Always check for spatial dependency (autocorrelation). Standard statistics assume each bin is an independent "island," but geographic data often "bleeds" across boundaries[cite: 199, 201].</p>
+    </section>
+
+    <section id="refs">
+        <h2>References</h2>
+        <p>Geospatial analysis training materials developed for the City of Edinburgh environmental data set[cite: 16].</p>
     </section>
 </main>
 
