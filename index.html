@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spatial Data Wrangling in QGIS</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; display: flex; margin: 0; color: #24292f; }
+        
+        /* Sidebar Navigation */
+        #sidebar { width: 280px; background: #f6f8fa; border-right: 1px solid #d0d7de; height: 100vh; position: fixed; padding: 20px; overflow-y: auto; }
+        #sidebar h2 { font-size: 1.2rem; color: #0969da; }
+        #sidebar ul { list-style: none; padding: 0; }
+        #sidebar li { margin: 15px 0; }
+        #sidebar a { text-decoration: none; color: #1f2328; font-weight: 500; }
+        #sidebar a:hover { color: #0969da; }
+
+        /* Main Content Area */
+        #content { margin-left: 320px; padding: 40px; max-width: 800px; line-height: 1.6; }
+        h1 { border-bottom: 1px solid #d0d7de; padding-bottom: 10px; }
+        .step-box { background: #fdf6e3; border-left: 5px solid #b58900; padding: 15px; margin: 20px 0; }
+        img { max-width: 100%; height: auto; border: 1px solid #d0d7de; border-radius: 6px; margin: 20px 0; }
+        code { background: #f1f1f1; padding: 2px 5px; border-radius: 3px; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+<nav id="sidebar">
+    <h2>QGIS Tutorial</h2>
+    <ul>
+        <li><a href="#intro">1. Introduction</a></li>
+        <li><a href="#aggregation">2. Vector Aggregation</a></li>
+        <li><a href="#raster">3. Raster Analysis</a></li>
+        <li><a href="#bins">4. Constructing Bins</a></li>
+        <li><a href="#stats">5. Statistical Exploration</a></li>
+    </ul>
+</nav>
+
+<main id="content">
+    <section id="intro">
+        <h1>Spatial Data Wrangling in QGIS</h1>
+        <p>This tutorial assists social scientists in treating spatial data as a primary variable[cite: 3]. You will learn to aggregate vector and raster information into polygons to visualise patterns of geospatial information[cite: 11].</p>
+    </section>
+
+    <section id="aggregation">
+        <h2>Aggregating Vector Point Data</h2>
+        <p>To create a choropleth map for tree data, we first calculate the number of trees per Ward Boundary[cite: 36].</p>
+        <div class="step-box">
+            <strong>Key Step:</strong> Use the <code>Join attributes by location (summary)</code> tool[cite: 37]. Select <code>count</code> for the summary to calculate the unique tree count[cite: 44].
+        </div>
+        </section>
+
+    <section id="stats">
+        <h2>Statistical Exploration</h2>
+        <p>Running a Spearman’s Rho correlation helps determine if areas with more trees are associated with lower noise[cite: 83, 184].</p>
+        <p>In Edinburgh, our results showed a weak positive relationship (0.0587), suggesting noisier areas often have more trees due to roadside planting[cite: 185, 196].</p>
+    </section>
+</main>
+
+</body>
+</html>
