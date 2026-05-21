@@ -93,6 +93,10 @@
                 <li>Click Open, then Add.</li>
             </ul>
         </div>
+
+        <p>When opening QGIS, you will see a warning sign that says something like the screenshot below,</p>
+        <img src="assets/images/Picture15.png" alt="CRS warning in QGIS">
+        <p>This happens because Carto Light, the basemap, is WGS84 while the default in the current QGIS project for this tutorial is the British Grid. The QGIS project has been set to be at the right Coordinate Reference System (CRS) already. Therefore, please click 'OK' and continue.</p>
         
         <p>Your QGIS workspace should now look similar to the image below, with the points overlaid on the boundary map.</p>
         <img src="assets/images/Picture1.png" alt="tree location and ward boundaries">
@@ -140,6 +144,14 @@
         </div>
         <img src="assets/images/Picture5.png" alt="Symbology for Joined Layer">
         <img src="assets/images/Picture6.png" alt="Aggregated Vector Output">
+
+        <p>When performing join attributes by location, you might get something like this below,</p>
+        <img src="assets/images/Picture16.png" alt="Join attributes warning in QGIS">
+        <p>Don't worry! Keep going.
+        <br><br>
+        QGIS prefers references for joining. In other words, for the two layers of geoinformation that you are hoping to join with the function, QGIS is hoping each geo layer has its own id that corresponds to each other. We don't have this for the project. But because the scale is relatively small, we could accept a slight decrease in execution performance. Therefore, the red text is not important in this session.
+        <br><br>
+        Please continue.</p>
     </section>
 
 <section id="raster">
@@ -161,7 +173,7 @@
             <ul>
                 <li>At the top of the menu bar, go to Layer > Add Layer > Add Raster Layer.</li>
                 <li>Click the three dots (...) to the right of the "Source" box to browse.</li>
-                <li>Navigate to the tutorial folder: <code>Rasters > Noise_Consolidated_LDEN > LDEN</code>.</li>
+                <li>Navigate to the tutorial folder: <code>Rasters > HORE_CONSOLIDATED_LDEN.tif</code>.</li>
                 <li>Select <code>HORE_CONSOLIDATED_LDEN.tif</code> and click Open, then Add.</li>
             </ul>
         </div>
@@ -263,6 +275,8 @@
         </div>
         <p>Now, you should have a layer like the following screenshot</p>
         <img src="assets/images/Picture13.png" alt="Grids Selected">
+
+        <p><strong>NOTE:</strong> by default, any new layer that is generated will be at the top. Therefore, this might cover anything underneath. In this case, to better visualise how the bins are related to the ward boundaries, it is worth moving your mouse to the Layers panel on the left-hand side, <strong>choose the ward boundary layer, click, hold and drag it to the top</strong> so that it sits above the bins layer, to get something like the image in the tutorial below.</p>
 
         <h2>Aggregation of Data into Hexagonal Bins</h2>
         <p>Now, let’s aggregate the data into these hexagonal bins. Since you have already learned how to aggregate vector and raster layers into ward boundaries, you can apply the same techniques here.</p>
